@@ -1,6 +1,6 @@
+<img src="./scala.png" width="100%" style="width:100%" />
+
 # VoiceIt API 2.0 Scala Wrapper
-![logo](https://raw.githubusercontent.com/voiceittech/voiceit2-scala/master/voiceitscala.jpg)
-<br />
 
 A Scala wrapper for VoiceIt's API 2.0 featuring Voice + Face Verification and Identification.
 <!--  -->
