@@ -5,6 +5,7 @@ import akka.stream.ActorMaterializer
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.headers.{ Authorization, BasicHttpCredentials }
 import java.nio.file.{Files, Paths}
 
