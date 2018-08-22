@@ -1,6 +1,6 @@
 #!/bin/bash
 commit=$(git log -1 --pretty=%B | head -n 1)
-version=$(echo $(curl -s https://api.github.com/repos/voiceittech/voiceit2-scala/releases/latest | grep '"tag_name":' |sed -E 's/.*"([^"]+)".*/\1/'))
+version=$(echo $(curl -s https://api.github.com/repos/voiceittech/voiceit2-scala/releases/latest | grep '"tag_name":' |sed -E 's/.*"([^"]+)".*/\1/') | tr "." "\n")
 set -- $version
 major=$1
 minor=$2
@@ -26,6 +26,5 @@ then
   fi
 
   version=$major'.'$minor'.'$patch
-  echo $version
   curl -u $GITHUBUSERNAME:$GITHUBPASSWORD -H "Content-Type: application/json" --request POST --data '{"tag_name": "'$version'", "target_commitish": "master", "name": "'$version'", "body": "", "draft": false, "prerelease": false}' https://api.github.com/repos/voiceittech/voiceit2-scala/releases
 fi
