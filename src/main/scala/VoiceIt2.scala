@@ -1,8 +1,8 @@
 package voiceit2
 
 import scalaj.http._
-import java.io.File
-import java.io.FileInputStream
+import java.io.{File, FileInputStream, IOException}
+import java.nio.file.{Paths, Files}
 
 class VoiceIt2(val key : String, val token : String) {
   val apikey = key
@@ -68,36 +68,50 @@ class VoiceIt2(val key : String, val token : String) {
     return Http(baseUrl + "/groups/" + groupId).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
   }
 
-  def getAllEnrollmentsForUser(userId : String) : String = {
-    return Http(baseUrl + "/enrollments/" + userId).headers(header).auth(apikey, apitoken).asString.body
+  def getVoiceEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/voice/" + userId).headers(header).auth(apikey, apitoken).asString.body
+  }
+
+  def getVideoEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/video/" + userId).headers(header).auth(apikey, apitoken).asString.body
+  }
+
+  def getFaceEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/face/" + userId).headers(header).auth(apikey, apitoken).asString.body
   }
 
   def getFaceEnrollmentsForUser(userId : String) : String = {
     return Http(baseUrl + "/enrollments/face/" + userId).headers(header).auth(apikey, apitoken).asString.body
   }
 
-  def createVoiceEnrollment(userId : String, lang : String, filePath : String) : String = {
-    return createVoiceEnrollment(userId, lang, pathToByteArray(filePath))
+  def createVoiceEnrollment(userId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return createVoiceEnrollment(userId, lang, phrase, pathToByteArray(filePath))
   }
 
-  def createVoiceEnrollment(userId : String, lang : String, file : Array[Byte]) : String = {
-    Http(baseUrl + "/enrollments")
+  def createVoiceEnrollment(userId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    Http(baseUrl + "/enrollments/voice")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
       .postMulti(MultiPart("recording", "recording", "audio/wav", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def createVoiceEnrollmentByUrl(userId : String, lang : String, url : String) : String = {
-    Http(baseUrl + "/enrollments/byUrl")
+  def createVoiceEnrollmentByUrl(userId : String, lang : String, phrase : String, url : String) : String = {
+    Http(baseUrl + "/enrollments/voice/byUrl")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
   def createFaceEnrollment(userId : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
     return createFaceEnrollment(userId, pathToByteArray(filePath), false)
   }
 
@@ -106,6 +120,9 @@ class VoiceIt2(val key : String, val token : String) {
   }
 
   def createFaceEnrollment(userId : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
     return createFaceEnrollment(userId, pathToByteArray(filePath), blinkDetection)
   }
 
@@ -118,34 +135,52 @@ class VoiceIt2(val key : String, val token : String) {
       .asString.body
   }
 
-  def createVideoEnrollment(userId : String, lang : String, filePath : String) : String = {
-    return createVideoEnrollment(userId, lang, pathToByteArray(filePath), false)
+  def createFaceEnrollmentByUrl(userId : String, url : String) : String = {
+    return createFaceEnrollmentByUrl(userId, url, false)
   }
 
-  def createVideoEnrollment(userId : String, lang : String, file : Array[Byte]) : String = {
-    return createVideoEnrollment(userId, lang, file, false)
+  def createFaceEnrollmentByUrl(userId : String, url : String, blinkDetection : Boolean) : String = {
+    Http(baseUrl + "/enrollments/face/byUrl")
+      .headers(header).auth(apikey, apitoken)
+      .postForm(Seq("userId" -> userId, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url))
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
   }
 
-  def createVideoEnrollment(userId : String, lang : String, filePath : String, blinkDetection : Boolean) : String = {
-    return createVideoEnrollment(userId, lang, pathToByteArray(filePath), blinkDetection)
+  def createVideoEnrollment(userId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return createVideoEnrollment(userId, lang, phrase, pathToByteArray(filePath), false)
   }
 
-  def createVideoEnrollment(userId : String, lang : String, file : Array[Byte], blinkDetection : Boolean) : String = {
+  def createVideoEnrollment(userId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    return createVideoEnrollment(userId, lang, phrase, file, false)
+  }
+
+  def createVideoEnrollment(userId : String, lang : String, phrase : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return createVideoEnrollment(userId, lang, phrase, pathToByteArray(filePath), blinkDetection)
+  }
+
+  def createVideoEnrollment(userId : String, lang : String, phrase : String, file : Array[Byte], blinkDetection : Boolean) : String = {
     Http(baseUrl + "/enrollments/video")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "phrase" -> phrase))
       .postMulti(MultiPart("video", "video", "video/mp4", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000).asString.body
   }
 
-  def createVideoEnrollmentByUrl(userId : String, lang : String, url : String) : String = {
-    return createVideoEnrollmentByUrl(userId, lang, url, false)
+  def createVideoEnrollmentByUrl(userId : String, lang : String, phrase : String, url : String) : String = {
+    return createVideoEnrollmentByUrl(userId, lang, phrase, url, false)
   }
 
-  def createVideoEnrollmentByUrl(userId : String, lang : String, url : String, blinkDetection : Boolean) : String = {
+  def createVideoEnrollmentByUrl(userId : String, lang : String, phrase : String, url : String, blinkDetection : Boolean) : String = {
     Http(baseUrl + "/enrollments/video/byUrl")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url, "phrase" -> phrase))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
@@ -157,42 +192,76 @@ class VoiceIt2(val key : String, val token : String) {
       .asString.body
   }
 
-  def deleteFaceEnrollment(userId : String, faceId : Int) : String = {
-    return Http(baseUrl + "/enrollments/face/" + userId + "/" + String.valueOf(faceId))
+  def deleteVideoEnrollment(userId : String, enrollmentId : Int) : String = {
+    return Http(baseUrl + "/enrollments/video/" + userId + "/" + String.valueOf(enrollmentId))
       .headers(header).auth(apikey, apitoken).method("DELETE")
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def deleteEnrollmentForUser(userId : String, enrollmentId : Int) : String = {
-    return Http(baseUrl + "/enrollments/" + userId + "/" + String.valueOf(enrollmentId))
+  def deleteAllVideoEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/" + userId + "/video")
       .headers(header).auth(apikey, apitoken).method("DELETE")
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def voiceVerification(userId : String, lang : String, filePath : String) : String = {
-    return voiceVerification(userId, lang, pathToByteArray(filePath))
+  def deleteVoiceEnrollment(userId : String, enrollmentId : Int) : String = {
+    return Http(baseUrl + "/enrollments/voice/" + userId + "/" + String.valueOf(enrollmentId))
+      .headers(header).auth(apikey, apitoken).method("DELETE")
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
   }
 
-  def voiceVerification(userId : String, lang : String, file : Array[Byte]) : String = {
-    Http(baseUrl + "/verification")
+  def deleteAllVoiceEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/" + userId + "/voice")
+      .headers(header).auth(apikey, apitoken).method("DELETE")
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
+  }
+
+  def deleteFaceEnrollment(userId : String, enrollmentId : Int) : String = {
+    return Http(baseUrl + "/enrollments/face/" + userId + "/" + String.valueOf(enrollmentId))
+      .headers(header).auth(apikey, apitoken).method("DELETE")
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
+  }
+
+  def deleteAllFaceEnrollments(userId : String) : String = {
+    return Http(baseUrl + "/enrollments/" + userId + "/face")
+      .headers(header).auth(apikey, apitoken).method("DELETE")
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
+  }
+
+  def voiceVerification(userId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return voiceVerification(userId, lang, phrase, pathToByteArray(filePath))
+  }
+
+  def voiceVerification(userId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    Http(baseUrl + "/verification/voice")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
       .postMulti(MultiPart("recording", "recording", "audio/wav", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def voiceVerificationByUrl(userId : String, lang : String, url : String) : String = {
-    Http(baseUrl + "/verification/byUrl")
+  def voiceVerificationByUrl(userId : String, lang : String, phrase : String, url : String) : String = {
+    Http(baseUrl + "/verification/voice/byUrl")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
   def faceVerification(userId : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
     return faceVerification(userId, pathToByteArray(filePath), false)
   }
 
@@ -201,6 +270,9 @@ class VoiceIt2(val key : String, val token : String) {
   }
 
   def faceVerification(userId : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
     return faceVerification(userId, pathToByteArray(filePath), blinkDetection)
   }
 
@@ -213,90 +285,159 @@ class VoiceIt2(val key : String, val token : String) {
       .asString.body
   }
 
-  def videoVerification(userId : String, lang : String, filePath : String) : String = {
-    return videoVerification(userId, lang, pathToByteArray(filePath), false)
+  def faceVerificationByUrl(userId : String, url : String) : String = {
+    return faceVerificationByUrl(userId, url, false)
   }
 
-  def videoVerification(userId : String, lang : String, file : Array[Byte]) : String = {
-    return videoVerification(userId, lang, file, false)
+  def faceVerificationByUrl(userId : String, url : String, blinkDetection : Boolean) : String = {
+    Http(baseUrl + "/verification/face/byUrl")
+      .headers(header).auth(apikey, apitoken)
+      .postForm(Seq("userId" -> userId, "fileUrl" -> url, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
   }
 
-  def videoVerification(userId : String, lang : String, filePath : String, blinkDetection : Boolean) : String = {
-    return videoVerification(userId, lang, pathToByteArray(filePath), blinkDetection)
+  def videoVerification(userId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return videoVerification(userId, lang, phrase, pathToByteArray(filePath), false)
   }
 
-  def videoVerification(userId : String, lang : String, file : Array[Byte], blinkDetection : Boolean) : String = {
+  def videoVerification(userId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    return videoVerification(userId, lang, phrase, file, false)
+  }
+
+  def videoVerification(userId : String, lang : String, phrase : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return videoVerification(userId, lang, phrase, pathToByteArray(filePath), blinkDetection)
+  }
+
+  def videoVerification(userId : String, lang : String, phrase : String, file : Array[Byte], blinkDetection : Boolean) : String = {
     Http(baseUrl + "/verification/video")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+      .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "phrase" -> phrase))
       .postMulti(MultiPart("video", "video", "video/mp4", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def videoVerificationByUrl(userId : String, lang : String, url : String) : String = {
-    return videoVerificationByUrl(userId, lang, url, false)
+  def videoVerificationByUrl(userId : String, lang : String, phrase : String, url : String) : String = {
+    return videoVerificationByUrl(userId, lang, phrase, url, false)
   }
 
-  def videoVerificationByUrl(userId : String, lang : String, url : String, blinkDetection : Boolean) : String = {
+  def videoVerificationByUrl(userId : String, lang : String, phrase : String, url : String, blinkDetection : Boolean) : String = {
       Http(baseUrl + "/verification/video/byUrl")
         .headers(header).auth(apikey, apitoken)
-        .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url))
+        .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
         .asString.body
   }
 
-  def voiceIdentification(groupId : String, lang : String, filePath : String) : String = {
-    return voiceIdentification(groupId, lang, pathToByteArray(filePath))
+  def voiceIdentification(groupId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return voiceIdentification(groupId, lang, phrase, pathToByteArray(filePath))
   }
 
-  def voiceIdentification(groupId : String, lang : String, file : Array[Byte]) : String = {
-    Http(baseUrl + "/identification")
+  def voiceIdentification(groupId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    Http(baseUrl + "/identification/voice")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang))
+      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "phrase" -> phrase))
       .postMulti(MultiPart("recording", "recording", "audio/wav", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def voiceIdentificationByUrl(groupId : String, lang : String, url : String) : String = {
-    Http(baseUrl + "/identification/byUrl")
+  def voiceIdentificationByUrl(groupId : String, lang : String, phrase : String, url : String) : String = {
+    Http(baseUrl + "/identification/voice/byUrl")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url))
+      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def videoIdentification(groupId : String, lang : String, filePath : String) : String = {
-    return videoIdentification(groupId, lang, pathToByteArray(filePath), false)
+  def videoIdentification(groupId : String, lang : String, phrase : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return videoIdentification(groupId, lang, phrase, pathToByteArray(filePath), false)
   }
 
-  def videoIdentification(groupId : String, lang : String, file : Array[Byte]) : String = {
-    return videoIdentification(groupId, lang, file, false)
+  def videoIdentification(groupId : String, lang : String, phrase : String, file : Array[Byte]) : String = {
+    return videoIdentification(groupId, lang, phrase, file, false)
   }
 
-  def videoIdentification(groupId : String, lang : String, filePath : String, blinkDetection : Boolean) : String = {
-    return videoIdentification(groupId, lang, pathToByteArray(filePath), blinkDetection)
+  def videoIdentification(groupId : String, lang : String, phrase : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return videoIdentification(groupId, lang, phrase, pathToByteArray(filePath), blinkDetection)
   }
 
-  def videoIdentification(groupId : String, lang : String, file : Array[Byte], blinkDetection : Boolean) : String = {
+  def videoIdentification(groupId : String, lang : String, phrase : String, file : Array[Byte], blinkDetection : Boolean) : String = {
     Http(baseUrl + "/identification/video")
       .headers(header).auth(apikey, apitoken)
-      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+      .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "phrase" -> phrase))
       .postMulti(MultiPart("video", "video", "video/mp4", file))
       .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
       .asString.body
   }
 
-  def videoIdentificationByUrl(groupId : String, lang : String, url : String) : String = {
-    return videoIdentificationByUrl(groupId, lang, url, false)
+  def videoIdentificationByUrl(groupId : String, lang : String, phrase : String, url : String) : String = {
+    return videoIdentificationByUrl(groupId, lang, phrase, url, false)
   }
 
-  def videoIdentificationByUrl(groupId : String, lang : String, url : String, blinkDetection : Boolean) : String = {
+  def videoIdentificationByUrl(groupId : String, lang : String, phrase : String, url : String, blinkDetection : Boolean) : String = {
       Http(baseUrl + "/identification/video/byUrl")
-        .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url))
+        .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "doBlinkDetection" -> String.valueOf(blinkDetection), "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
         .asString.body
+  }
+
+  def faceIdentification(groupId : String, filePath : String) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return faceIdentification(groupId, pathToByteArray(filePath), false)
+  }
+
+  def faceIdentification(groupId : String, file : Array[Byte]) : String = {
+    return faceIdentification(groupId, file, false)
+  }
+
+  def faceIdentification(groupId : String, filePath : String, blinkDetection : Boolean) : String = {
+    if (!Files.exists(Paths.get(filePath))) {
+      throw new IOException("File " + filePath + " not found") 
+    }
+    return faceIdentification(groupId, pathToByteArray(filePath), blinkDetection)
+  }
+
+  def faceIdentification(groupId : String, file : Array[Byte], blinkDetection : Boolean) : String = {
+    Http(baseUrl + "/identification/face")
+      .headers(header).auth(apikey, apitoken)
+      .postForm(Seq("groupId" -> groupId, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+      .postMulti(MultiPart("video", "video", "video/mp4", file))
+      .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+      .asString.body
+  }
+
+  def faceIdentificationByUrl(groupId : String, url : String) : String = {
+    return faceIdentificationByUrl(groupId, url, false)
+  }
+
+  def faceIdentificationByUrl(groupId : String, url : String, blinkDetection : Boolean) : String = {
+      Http(baseUrl + "/identification/face/byUrl")
+        .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId,"fileUrl" -> url, "doBlinkDetection" -> String.valueOf(blinkDetection)))
+        .timeout(connTimeoutMs = 1000000, readTimeoutMs = 5000000)
+        .asString.body
+  }
+
+  def getPhrases(contentLanguage : String) : String = {
+    return Http(baseUrl + "/phrases/" + contentLanguage).headers(header).auth(apikey, apitoken).asString.body
   }
 
 }
