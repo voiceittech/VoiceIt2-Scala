@@ -350,12 +350,12 @@ class TestDeleteEnrollment extends FunSuite with BeforeAndAfter {
     }
 
     // Delete Face Enrollment for User
-    // test("deleteFaceEnrollment()") {
-      // vi.deleteFaceEnrollment(userId, faceEnrollmentId)
-      // val ret = Json.parse(vi.getFaceEnrollments(userId))
-      // val count = (ret \ "count").get.as[Int]
-      // assert(count === 1)
-    // }
+    test("deleteFaceEnrollment()") {
+      vi.deleteFaceEnrollment(userId, faceEnrollmentId)
+      val ret = Json.parse(vi.getFaceEnrollments(userId))
+      val count = (ret \ "count").get.as[Int]
+      assert(count === 1)
+    }
 }
 
 class TestDeleteEnrollments extends FunSuite with BeforeAndAfter {
@@ -506,8 +506,7 @@ class TestVideoEnrollments extends FunSuite with BeforeAndAfter {
       FileUtils.deleteQuietly(new File("./testenrollmentvideoEnrollmentArmaan1.mov"))
     }
 
-    // Create Enrollments
-
+    // Create Video Enrollment
     test("createVideoEnrollment()") {
       val ret = Json.parse(vi.createVideoEnrollment(userId, "en-US", "never forget tomorrow is a new day", "./testenrollmentvideoEnrollmentArmaan1.mov"))
       val status = (ret \ "status").get.as[Int]
@@ -598,8 +597,7 @@ class TestVideoEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
       vi.deleteUser(userId)
     }
 
-    // Create Enrollments
-
+    // Create Video Enrollment
     test("createVideoEnrollmentByUrl()") {
       val ret = Json.parse(vi.createVideoEnrollmentByUrl(userId, "en-US", "never forget tomorrow is a new day", "https://s3.amazonaws.com/voiceit-api2-testing-files/test-data/videoEnrollmentArmaan1.mov"))
       val status = (ret \ "status").get.as[Int]
@@ -688,8 +686,7 @@ class TestVoiceEnrollments extends FunSuite with BeforeAndAfter {
       FileUtils.deleteQuietly(new File("./testenrollmentenrollmentArmaan1.wav"))
     }
 
-    // Create Enrollments
-
+    // Create Voice Enrollment
     test("createVoiceEnrollment()") {
       val ret = Json.parse(vi.createVoiceEnrollment(userId, "en-US", "never forget tomorrow is a new day", "./testenrollmentenrollmentArmaan1.wav"))
       val status = (ret \ "status").get.as[Int]
@@ -720,8 +717,7 @@ class TestVoiceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
       vi.deleteUser(userId)
     }
 
-    // Create Enrollments
-
+    // Create Voice Enrollment
     test("createVoiceEnrollmentByUrl()") {
       val ret = Json.parse(vi.createVoiceEnrollmentByUrl(userId, "en-US", "never forget tomorrow is a new day", "https://s3.amazonaws.com/voiceit-api2-testing-files/test-data/enrollmentArmaan1.wav"))
       val status = (ret \ "status").get.as[Int]
@@ -873,8 +869,7 @@ class TestFaceEnrollments extends FunSuite with BeforeAndAfter {
       FileUtils.deleteQuietly(new File("./testenrollmentfaceEnrollmentArmaan1.mp4"))
     }
 
-    // Create Enrollments
-
+    // Create Face Enrollment
     test("createFaceEnrollment()") {
       val ret = Json.parse(vi.createFaceEnrollment(userId, "./testenrollmentfaceEnrollmentArmaan1.mp4"))
       val status = (ret \ "status").get.as[Int]
@@ -905,8 +900,7 @@ class TestFaceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
       vi.deleteUser(userId)
     }
 
-    // Create Enrollments
-
+    // Create Face Enrollment
     test("createFaceEnrollmentByUrl()") {
       val ret = Json.parse(vi.createFaceEnrollmentByUrl(userId, "https://s3.amazonaws.com/voiceit-api2-testing-files/test-data/faceEnrollmentArmaan1.mp4"))
       val status = (ret \ "status").get.as[Int]
