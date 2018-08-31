@@ -9,8 +9,8 @@ class VoiceIt2(val key : String, val token : String) {
   val apitoken = token
   val baseUrl : String = "https://api.voiceit.io"
   val header = Seq("platformId" -> "43")
-  val connTimeoutMs = 1000000
-  val readTimeoutMs = 5000000
+  val connTimeoutMs = 60000
+  val readTimeoutMs = 60000
 
   def pathToByteArray(path : String) : Array[Byte] = {
     val is = new FileInputStream(path)
