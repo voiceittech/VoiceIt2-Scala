@@ -72,6 +72,17 @@ class TestIO extends FunSuite with BeforeAndAfter {
     }
 }
 
+class TestWebhooks extends FunSuite with BeforeAndAfter {
+    val viapikey = sys.env("VIAPIKEY")
+    val viapitoken = sys.env("VIAPITOKEN")
+    var vi = new VoiceIt2(viapikey, viapitoken)
+    vi.addNotificationUrl("https://voiceit.io")
+    assert(vi.notificationUrl === "https://voiceit.io", "Webhook URL == https://voiceit.io")
+    vi.removeNotificationUrl()
+    assert(vi.notificationUrl === "", "Webhook URL == ''")
+
+}
+
 class TestBasics extends FunSuite with BeforeAndAfter {
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
