@@ -183,7 +183,7 @@ class TestBasics extends FunSuite with BeforeAndAfter {
     }
 
     test("createUserToken()") {
-      val ret = Json.parse(vi.createUserToken(userId))
+      val ret = Json.parse(vi.createUserToken(userId, 5))
       val status = (ret \ "status").get.as[Int]
       val message = (ret \ "message").get.as[String]
       assert(status === 201, "message: " + message)

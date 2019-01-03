@@ -651,11 +651,11 @@ class VoiceIt2(val key : String, val token : String) {
     }
   }
 
-  def createUserToken(userId : String) : String = {
+  def createUserToken(userId : String, timeOut : Int) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users/" + userId + "/token").headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/users/" + userId + "/token").param("timeOut", String.valueOf(timeOut)).headers(header).auth(apikey, apitoken).postMulti().asString.body
     } else {
-      return Http(baseUrl + "/users/" + userId + "/token").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/users/" + userId + "/token").param("notificationURL", notificationUrl).param("timeOut", String.valueOf(timeOut)).headers(header).auth(apikey, apitoken).postMulti().asString.body
     }
   }
 
