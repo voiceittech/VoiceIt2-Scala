@@ -8,7 +8,7 @@ class VoiceIt2(val key : String, val token : String) {
   val apikey = key
   val apitoken = token
   val baseUrl : String = "https://api.voiceit.io"
-  val version : String = "2.3.0"
+  val version : String = "2.4.0"
   var notificationUrl : String = ""
   val header = Seq("platformId" -> "43", "platformVersion" -> version)
   val connTimeoutMs = 60000
@@ -293,96 +293,6 @@ class VoiceIt2(val key : String, val token : String) {
         .asString.body
     } else {
       return Http(baseUrl + "/enrollments/" + userId + "/all")
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteVideoEnrollment(userId : String, enrollmentId : Int) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/video/" + userId + "/" + String.valueOf(enrollmentId))
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/video/" + userId + "/" + String.valueOf(enrollmentId))
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteAllVideoEnrollments(userId : String) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/" + userId + "/video")
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/" + userId + "/video")
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteVoiceEnrollment(userId : String, enrollmentId : Int) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/voice/" + userId + "/" + String.valueOf(enrollmentId))
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/voice/" + userId + "/" + String.valueOf(enrollmentId))
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteAllVoiceEnrollments(userId : String) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/" + userId + "/voice")
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/" + userId + "/voice")
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteFaceEnrollment(userId : String, enrollmentId : Int) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/face/" + userId + "/" + String.valueOf(enrollmentId))
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/face/" + userId + "/" + String.valueOf(enrollmentId))
-        .param("notificationURL", notificationUrl)
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    }
-  }
-
-  def deleteAllFaceEnrollments(userId : String) : String = {
-    if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/" + userId + "/face")
-        .headers(header).auth(apikey, apitoken).method("DELETE")
-        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
-    } else {
-      return Http(baseUrl + "/enrollments/" + userId + "/face")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken).method("DELETE")
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)

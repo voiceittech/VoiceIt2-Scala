@@ -386,34 +386,6 @@ class TestDeleteEnrollment extends FunSuite with BeforeAndAfter {
       FileUtils.deleteQuietly(new File("./testdeleteenrollmentenrollmentA2.wav"))
     }
 
-    // Delete Video Enrollment for User
-    test("deleteVideoEnrollment()") {
-      vi.deleteVideoEnrollment(userId, videoEnrollmentId)
-      val ret = Json.parse(vi.getAllVideoEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 1, "message: " + message)
-    }
-
-    // Delete Voice Enrollment for User
-    test("deleteVoiceEnrollment()") {
-      vi.deleteVoiceEnrollment(userId, voiceEnrollmentId)
-      val ret = Json.parse(vi.getAllVoiceEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 1, "message: " + message)
-    }
-
-    // Delete Face Enrollment for User
-    test("deleteFaceEnrollment()") {
-      vi.deleteFaceEnrollment(userId, faceEnrollmentId)
-      val ret = Json.parse(vi.getAllFaceEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 1, "message: " + message)
-    }
-}
-
 class TestDeleteEnrollments extends FunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
@@ -453,33 +425,6 @@ class TestDeleteEnrollments extends FunSuite with BeforeAndAfter {
       FileUtils.deleteQuietly(new File("./testdeleteenrollmentsenrollmentA2.wav"))
       FileUtils.deleteQuietly(new File("./testdeleteenrollmentsfaceEnrollmentB1.mp4"))
       FileUtils.deleteQuietly(new File("./testdeleteenrollmentsfaceEnrollmentB2.mp4"))
-    }
-
-    // Delete All Video Enrollments for User
-    test("deleteAllVideoEnrollments()") {
-      vi.deleteAllVideoEnrollments(userId)
-      val ret = Json.parse(vi.getAllVideoEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 0, "message: " + message)
-    }
-
-    // Delete All Voice Enrollments for User
-    test("deleteAllVoiceEnrollments()") {
-      vi.deleteAllVoiceEnrollments(userId)
-      val ret = Json.parse(vi.getAllVoiceEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 0, "message: " + message)
-    }
-
-    // Delete All Face Enrollments for User
-    test("deleteAllFaceEnrollments()") {
-      vi.deleteAllFaceEnrollments(userId)
-      val ret = Json.parse(vi.getAllFaceEnrollments(userId))
-      val count = (ret \ "count").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(count === 0, "message: " + message)
     }
 
 }
