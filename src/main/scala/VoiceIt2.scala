@@ -8,7 +8,7 @@ class VoiceIt2(val key : String, val token : String) {
   val apikey = key
   val apitoken = token
   val baseUrl : String = "https://api.voiceit.io"
-  val version : String = "2.4.0"
+  val version : String = "2.5.0"
   var notificationUrl : String = ""
   val header = Seq("platformId" -> "43", "platformVersion" -> version)
   val connTimeoutMs = 60000
@@ -573,5 +573,58 @@ class VoiceIt2(val key : String, val token : String) {
   def expireUserTokens(userId : String) : String = {
     return Http(baseUrl + "/users/" + userId + "/expireTokens").headers(header).auth(apikey, apitoken).postMulti().asString.body
   }
+
+  def createManagedSubAccount(firstName : String, lastName : String, email : String, password : String, lang : String) : String = {
+    if (notificationUrl == "") {
+      return Http(baseUrl + "/subaccount/managed")
+        .headers(header).auth(apikey, apitoken)
+        .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
+        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
+        .asString.body
+    } else {
+      return Http(baseUrl + "/subaccount/managed")
+        .param("notificationURL", notificationUrl)
+        .headers(header).auth(apikey, apitoken)
+        .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
+        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
+        .asString.body
+    }
+  }
+
+  def createUnmanagedSubAccount(firstName : String, lastName : String, email : String, password : String, lang : String) : String = {
+    if (notificationUrl == "") {
+      return Http(baseUrl + "/subaccount/unmanaged")
+        .headers(header).auth(apikey, apitoken)
+        .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
+        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
+        .asString.body
+    } else {
+      return Http(baseUrl + "/subaccount/unmanaged")
+        .param("notificationURL", notificationUrl)
+        .headers(header).auth(apikey, apitoken)
+        .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
+        .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
+        .asString.body
+    }
+  }
+
+  def regenerateSubAccountAPIToken(subaccountAPIKey : String) : String = {
+
+    if (notificationUrl == "") {
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).postMulti().asString.body
+    } else {
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().asString.body
+    }
+    
+  }
+
+  def deleteSubAccount(subaccountAPIKey : String) : String = {
+    if (notificationUrl == "") {
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+    } else {
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+    }
+  }
+
 
 }

@@ -227,6 +227,56 @@ class TestBasics extends FunSuite with BeforeAndAfter {
 
 }
 
+class TestSubAccount extends FunSuite with BeforeAndAfter {
+    val viapikey = sys.env("VIAPIKEY")
+    val viapitoken = sys.env("VIAPITOKEN")
+    var vi = new VoiceIt2(viapikey, viapitoken)
+    var managedSubAccountAPIKey : String = _
+    var unManagedSubAccountAPIKey : String = _
+
+    test("createManagedSubAccount()") {
+      val ret = Json.parse(vi.createManagedSubAccount("Test", "Scala", "", "", ""))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 201, "message: " + message)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC", "message: " + message)
+      managedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
+    }
+
+    test("createUnmanagedSubAccount()") {
+      val ret = Json.parse(vi.createUnmanagedSubAccount("Test", "Scala", "", "", ""))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 201, "message: " + message)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC", "message: " + message)
+      unManagedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
+    }
+
+    test("regenerateSubAccountAPIToken()") {
+      val ret = Json.parse(vi.regenerateSubAccountAPIToken(managedSubAccountAPIKey))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 200, "message: " + message)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC", "message: " + message)
+    }
+
+    test("deleteSubAccount()") {
+      val ret = Json.parse(vi.deleteSubAccount(managedSubAccountAPIKey))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 200, "message: " + message)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC", "message: " + message)
+    }
+
+    after {
+      vi.deleteSubAccount(unManagedSubAccountAPIKey)
+    }
+}
+
 class TestGetVideoEnrollments extends FunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
