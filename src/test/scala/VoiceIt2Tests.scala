@@ -234,55 +234,63 @@ class TestSubAccount extends FunSuite with BeforeAndAfter {
     var managedSubAccountAPIKey : String = _
     var unManagedSubAccountAPIKey : String = _
 
-    test("createManagedSubAccount()") {
-      val ret = Json.parse(vi.createManagedSubAccount("Test", "Scala", "", "", ""))
-      val status = (ret \ "status").get.as[Int]
-      val message = (ret \ "message").get.as[String]
-      assert(status === 201, "message: " + message)
-      val responseCode = (ret \ "responseCode").get.as[String]
-      assert(responseCode === "SUCC", "message: " + message)
-      managedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
-    }
-
     test("createUnmanagedSubAccount()") {
       val ret = Json.parse(vi.createUnmanagedSubAccount("Test", "Scala", "", "", ""))
       val status = (ret \ "status").get.as[Int]
       val message = (ret \ "message").get.as[String]
-      assert(status === 201, "message: " + message)
+      assert(status === 201)
       val responseCode = (ret \ "responseCode").get.as[String]
-      assert(responseCode === "SUCC", "message: " + message)
+      assert(responseCode === "SUCC")
       unManagedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
     }
 
-    test("switchSubAccountType()") {
-      val ret = Json.parse(vi.switchSubAccountType(unManagedSubAccountAPIKey))
+    test("createManagedSubAccount()") {
+      val ret = Json.parse(vi.createManagedSubAccount("Test", "Scala", "", "", ""))
       val status = (ret \ "status").get.as[Int]
       val message = (ret \ "message").get.as[String]
-      assert(status === 200, "message: " + message)
+      assert(status === 201)
       val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC")
+      managedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
     }
 
     test("regenerateSubAccountAPIToken()") {
       val ret = Json.parse(vi.regenerateSubAccountAPIToken(managedSubAccountAPIKey))
       val status = (ret \ "status").get.as[Int]
       val message = (ret \ "message").get.as[String]
-      assert(status === 200, "message: " + message)
+      assert(status === 200)
       val responseCode = (ret \ "responseCode").get.as[String]
-      assert(responseCode === "SUCC", "message: " + message)
+      assert(responseCode === "SUCC")
     }
 
-    test("deleteSubAccount()") {
+
+    test("switchSubAccountType()") {
+      val ret = Json.parse(vi.switchSubAccountType(unManagedSubAccountAPIKey))
+      val message = (ret \ "message").get.as[String]
+      val status = (ret \ "status").get.as[Int]
+      assert(status === 200)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC")
+    }
+
+    test("deleteSubAccount1()") {
       val ret = Json.parse(vi.deleteSubAccount(managedSubAccountAPIKey))
       val status = (ret \ "status").get.as[Int]
       val message = (ret \ "message").get.as[String]
-      assert(status === 200, "message: " + message)
+      assert(status === 200)
       val responseCode = (ret \ "responseCode").get.as[String]
-      assert(responseCode === "SUCC", "message: " + message)
+      assert(responseCode === "SUCC")
     }
 
-    after {
-      vi.deleteSubAccount(unManagedSubAccountAPIKey)
+    test("deleteSubAccount2()") {
+      val ret = Json.parse(vi.deleteSubAccount(unManagedSubAccountAPIKey))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 200)
+      val responseCode = (ret \ "responseCode").get.as[String]
+      assert(responseCode === "SUCC")
     }
+
 }
 
 class TestGetVideoEnrollments extends FunSuite with BeforeAndAfter {
