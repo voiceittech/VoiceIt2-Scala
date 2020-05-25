@@ -254,6 +254,14 @@ class TestSubAccount extends FunSuite with BeforeAndAfter {
       unManagedSubAccountAPIKey = (ret \ "apiKey").get.as[String]
     }
 
+    test("switchSubAccountType()") {
+      val ret = Json.parse(vi.switchSubAccountType(unManagedSubAccountAPIKey))
+      val status = (ret \ "status").get.as[Int]
+      val message = (ret \ "message").get.as[String]
+      assert(status === 200, "message: " + message)
+      val responseCode = (ret \ "responseCode").get.as[String]
+    }
+
     test("regenerateSubAccountAPIToken()") {
       val ret = Json.parse(vi.regenerateSubAccountAPIToken(managedSubAccountAPIKey))
       val status = (ret \ "status").get.as[Int]

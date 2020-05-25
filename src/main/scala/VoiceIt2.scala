@@ -8,7 +8,7 @@ class VoiceIt2(val key : String, val token : String) {
   val apikey = key
   val apitoken = token
   val baseUrl : String = "https://api.voiceit.io"
-  val version : String = "2.5.0"
+  val version : String = "2.6.0"
   var notificationUrl : String = ""
   val header = Seq("platformId" -> "43", "platformVersion" -> version)
   val connTimeoutMs = 60000
@@ -605,6 +605,14 @@ class VoiceIt2(val key : String, val token : String) {
         .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
         .asString.body
+    }
+  }
+
+  def switchSubAccountType(subAccountAPIKey : String) : String = {
+    if (notificationUrl == "") {
+      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").headers(header).auth(apikey, apitoken).method("POST").asString.body
+    } else {
+      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("POST").asString.body
     }
   }
 
