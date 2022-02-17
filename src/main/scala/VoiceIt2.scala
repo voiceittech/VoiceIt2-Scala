@@ -4,11 +4,11 @@ import scalaj.http._
 import java.io.{File, FileInputStream, IOException}
 import java.nio.file.{Paths, Files}
 
-class VoiceIt2(val key : String, val token : String) {
+class VoiceIt2(val key : String, val token : String, var customUrl: String = "https://api.voiceit.io") {
   val apikey = key
   val apitoken = token
-  val baseUrl : String = "https://api.voiceit.io"
-  val version : String = "2.6.1"
+  val baseUrl : String = customUrl
+  val version : String = "2.7.0"
   var notificationUrl : String = ""
   val header = Seq("platformId" -> "43", "platformVersion" -> version)
   val connTimeoutMs = 60000
