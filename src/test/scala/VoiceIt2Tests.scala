@@ -6,12 +6,12 @@ import java.io.IOException
 import java.io.PrintWriter
 import java.net.URL
 import java.io.File
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
 import play.api.libs.json.Json
 import voiceit2.VoiceIt2
 
-class TestIO extends FunSuite with BeforeAndAfter {
+class TestIO extends AnyFunSuite with BeforeAndAfter {
 
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
@@ -74,7 +74,7 @@ class TestIO extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestWebhooks extends FunSuite with BeforeAndAfter {
+class TestWebhooks extends AnyFunSuite with BeforeAndAfter {
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
     var vi = new VoiceIt2(viapikey, viapitoken)
@@ -90,7 +90,7 @@ class TestWebhooks extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestBasics extends FunSuite with BeforeAndAfter {
+class TestBasics extends AnyFunSuite with BeforeAndAfter {
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
     var vi = new VoiceIt2(viapikey, viapitoken)
@@ -227,7 +227,7 @@ class TestBasics extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestSubAccount extends FunSuite with BeforeAndAfter {
+class TestSubAccount extends AnyFunSuite with BeforeAndAfter {
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
     var vi = new VoiceIt2(viapikey, viapitoken)
@@ -293,7 +293,7 @@ class TestSubAccount extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestGetVideoEnrollments extends FunSuite with BeforeAndAfter {
+class TestGetVideoEnrollments extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -328,7 +328,7 @@ class TestGetVideoEnrollments extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestGetFaceEnrollments extends FunSuite with BeforeAndAfter {
+class TestGetFaceEnrollments extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -363,7 +363,7 @@ class TestGetFaceEnrollments extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestGetVoiceEnrollments extends FunSuite with BeforeAndAfter {
+class TestGetVoiceEnrollments extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -398,7 +398,7 @@ class TestGetVoiceEnrollments extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestDeleteEnrollment extends FunSuite with BeforeAndAfter {
+class TestDeleteEnrollment extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -444,7 +444,7 @@ class TestDeleteEnrollment extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestDeleteEnrollments extends FunSuite with BeforeAndAfter {
+class TestDeleteEnrollments extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -487,7 +487,7 @@ class TestDeleteEnrollments extends FunSuite with BeforeAndAfter {
 
 }
 
-class TestDeleteAllEnrollments extends FunSuite with BeforeAndAfter {
+class TestDeleteAllEnrollments extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -545,7 +545,7 @@ class TestDeleteAllEnrollments extends FunSuite with BeforeAndAfter {
 }
 
 
-class TestVideoEnrollments extends FunSuite with BeforeAndAfter {
+class TestVideoEnrollments extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -580,7 +580,7 @@ class TestVideoEnrollments extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestVideoVerificationIdentification extends FunSuite with BeforeAndAfter {
+class TestVideoVerificationIdentification extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -642,7 +642,7 @@ class TestVideoVerificationIdentification extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestVideoEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
+class TestVideoEnrollmentsByUrl extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -673,7 +673,7 @@ class TestVideoEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
       assert(responseCode === "SUCC", "message: " + message)
     }
 }
-class TestVideoVerificationIdentificationByUrl extends FunSuite with BeforeAndAfter {
+class TestVideoVerificationIdentificationByUrl extends AnyFunSuite with BeforeAndAfter {
 
     val viapikey = sys.env("VIAPIKEY")
     val viapitoken = sys.env("VIAPITOKEN")
@@ -732,7 +732,7 @@ class TestVideoVerificationIdentificationByUrl extends FunSuite with BeforeAndAf
 }
 
 
-class TestVoiceEnrollments extends FunSuite with BeforeAndAfter {
+class TestVoiceEnrollments extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -766,7 +766,7 @@ class TestVoiceEnrollments extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestVoiceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
+class TestVoiceEnrollmentsByUrl extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -798,7 +798,7 @@ class TestVoiceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestVoiceVerificationIdentification extends FunSuite with BeforeAndAfter {
+class TestVoiceVerificationIdentification extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -860,7 +860,7 @@ class TestVoiceVerificationIdentification extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestVoiceVerificationIdentificationByUrl extends FunSuite with BeforeAndAfter {
+class TestVoiceVerificationIdentificationByUrl extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -921,7 +921,7 @@ class TestVoiceVerificationIdentificationByUrl extends FunSuite with BeforeAndAf
     }
 }
 
-class TestFaceEnrollments extends FunSuite with BeforeAndAfter {
+class TestFaceEnrollments extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -955,7 +955,7 @@ class TestFaceEnrollments extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestFaceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
+class TestFaceEnrollmentsByUrl extends AnyFunSuite with BeforeAndAfter {
 
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
@@ -987,7 +987,7 @@ class TestFaceEnrollmentsByUrl extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestFaceVerificationIdentification extends FunSuite with BeforeAndAfter {
+class TestFaceVerificationIdentification extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }
@@ -1049,7 +1049,7 @@ class TestFaceVerificationIdentification extends FunSuite with BeforeAndAfter {
     }
 }
 
-class TestFaceVerificationIdentificationByUrl extends FunSuite with BeforeAndAfter {
+class TestFaceVerificationIdentificationByUrl extends AnyFunSuite with BeforeAndAfter {
     def downloadFile(source : String, path : String) {
       new URL(source) #> new File(path) !!
     }

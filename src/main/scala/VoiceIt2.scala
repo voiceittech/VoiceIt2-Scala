@@ -8,7 +8,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
   val apikey = key
   val apitoken = token
   val baseUrl : String = customUrl
-  val version : String = "2.7.0"
+  val version : String = "2.7.1"
   var notificationUrl : String = ""
   val header = Seq("platformId" -> "43", "platformVersion" -> version)
   val connTimeoutMs = 60000
@@ -37,122 +37,122 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
 
   def getAllUsers() : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users").headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users").headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/users").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def createUser() : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users").headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/users").headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/users").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/users").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def checkUserExists(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users/" + userId).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users/" + userId).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/users/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def deleteUser(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users/" + userId).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/users/" + userId).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/users/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/users/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getGroupsForUser(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/users/" + userId + "/groups").headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users/" + userId + "/groups").headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/users/" + userId + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/users/" + userId + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
 
   def getAllGroups() : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups").headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups").headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getGroup(groupId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups/" + groupId).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups/" + groupId).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups/" + groupId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups/" + groupId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def checkGroupExists(groupId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups/" + groupId + "/exists").headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups/" + groupId + "/exists").headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups/" + groupId + "/exists").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/groups/" + groupId + "/exists").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def createGroup(description : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups").headers(header).auth(apikey, apitoken).postMulti(MultiPart("description", "description", "text/plain", description)).asString.body
+      return Http(baseUrl + "/groups").headers(header).auth(apikey, apitoken).postMulti(MultiPart("description", "description", "text/plain", description)).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti(MultiPart("description", "description", "text/plain", description)).asString.body
+      return Http(baseUrl + "/groups").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti(MultiPart("description", "description", "text/plain", description)).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def addUserToGroup(groupId : String, userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups/addUser").headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").asString.body
+      return Http(baseUrl + "/groups/addUser").headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups/addUser").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").asString.body
+      return Http(baseUrl + "/groups/addUser").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def removeUserFromGroup(groupId : String, userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups/removeUser").headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").asString.body
+      return Http(baseUrl + "/groups/removeUser").headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups/removeUser").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").asString.body
+      return Http(baseUrl + "/groups/removeUser").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "userId" -> userId)).method("PUT").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def deleteGroup(groupId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/groups/" + groupId).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/groups/" + groupId).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/groups/" + groupId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/groups/" + groupId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getAllVoiceEnrollments(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/voice/" + userId).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/voice/" + userId).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/enrollments/voice/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/voice/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getAllVideoEnrollments(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/video/" + userId).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/video/" + userId).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/enrollments/video/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/video/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getAllFaceEnrollments(userId : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/enrollments/face/" + userId).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/face/" + userId).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/enrollments/face/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/enrollments/face/" + userId).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -170,7 +170,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/voice")
         .param("notificationURL", notificationUrl)
@@ -178,7 +178,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -188,14 +188,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/voice/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -213,7 +213,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/face")
         .param("notificationURL", notificationUrl)
@@ -221,7 +221,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -231,14 +231,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/face/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -256,7 +256,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/video")
         .param("notificationURL", notificationUrl)
@@ -264,7 +264,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -274,14 +274,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/video/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -290,13 +290,13 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
       return Http(baseUrl + "/enrollments/" + userId + "/all")
         .headers(header).auth(apikey, apitoken).method("DELETE")
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/enrollments/" + userId + "/all")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken).method("DELETE")
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -314,7 +314,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/voice")
         .param("notificationURL", notificationUrl)
@@ -322,7 +322,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -332,14 +332,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/voice/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -357,7 +357,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/face")
         .param("notificationURL", notificationUrl)
@@ -365,7 +365,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -375,14 +375,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/face/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -400,7 +400,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/video")
         .param("notificationURL", notificationUrl)
@@ -408,7 +408,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -418,14 +418,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/verification/video/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("userId" -> userId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -443,7 +443,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/voice")
         .param("notificationURL", notificationUrl)
@@ -451,7 +451,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("recording", "recording", "audio/wav", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -461,14 +461,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/voice/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -486,7 +486,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/video")
         .param("notificationURL", notificationUrl)
@@ -494,7 +494,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "phrase" -> phrase))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -503,13 +503,13 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
       return Http(baseUrl + "/identification/video/byUrl")
         .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/video/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId, "contentLanguage" -> lang, "fileUrl" -> url, "phrase" -> phrase))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -531,7 +531,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/face")
         .param("notificationURL", notificationUrl)
@@ -539,7 +539,7 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .postForm(Seq("groupId" -> groupId))
         .postMulti(MultiPart("video", "video", "video/mp4", file))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -548,30 +548,30 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
       return Http(baseUrl + "/identification/face/byUrl")
         .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId,"fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/identification/face/byUrl")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken).postForm(Seq("groupId" -> groupId,"fileUrl" -> url))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def getPhrases(contentLanguage : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/phrases/" + contentLanguage).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/phrases/" + contentLanguage).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/phrases/" + contentLanguage).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).asString.body
+      return Http(baseUrl + "/phrases/" + contentLanguage).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def createUserToken(userId : String, secondsToTimeout : Int) : String = {
-    return Http(baseUrl + "/users/" + userId + "/token").param("timeOut", String.valueOf(secondsToTimeout)).headers(header).auth(apikey, apitoken).postMulti().asString.body
+    return Http(baseUrl + "/users/" + userId + "/token").param("timeOut", String.valueOf(secondsToTimeout)).headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
   }
 
   def expireUserTokens(userId : String) : String = {
-    return Http(baseUrl + "/users/" + userId + "/expireTokens").headers(header).auth(apikey, apitoken).postMulti().asString.body
+    return Http(baseUrl + "/users/" + userId + "/expireTokens").headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
   }
 
   def createManagedSubAccount(firstName : String, lastName : String, email : String, password : String, lang : String) : String = {
@@ -580,14 +580,14 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/subaccount/managed")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
@@ -597,40 +597,40 @@ class VoiceIt2(val key : String, val token : String, var customUrl: String = "ht
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
       return Http(baseUrl + "/subaccount/unmanaged")
         .param("notificationURL", notificationUrl)
         .headers(header).auth(apikey, apitoken)
         .postForm(Seq("firstName" -> firstName, "contentLanguage" -> lang, "lastName" -> lastName, "email" -> email, "password" -> password))
         .timeout(connTimeoutMs = connTimeoutMs, readTimeoutMs = readTimeoutMs)
-        .asString.body
+        .timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def switchSubAccountType(subAccountAPIKey : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").headers(header).auth(apikey, apitoken).method("POST").asString.body
+      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").headers(header).auth(apikey, apitoken).method("POST").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("POST").asString.body
+      return Http(baseUrl + "/subaccount/" + subAccountAPIKey + "/switchType").param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("POST").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
   def regenerateSubAccountAPIToken(subaccountAPIKey : String) : String = {
 
     if (notificationUrl == "") {
-      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().asString.body
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).postMulti().timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
     
   }
 
   def deleteSubAccount(subaccountAPIKey : String) : String = {
     if (notificationUrl == "") {
-      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     } else {
-      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").asString.body
+      return Http(baseUrl + "/subaccount/" + subaccountAPIKey).param("notificationURL", notificationUrl).headers(header).auth(apikey, apitoken).method("DELETE").timeout(connTimeoutMs = 100000, readTimeoutMs = 100000).asString.body
     }
   }
 
