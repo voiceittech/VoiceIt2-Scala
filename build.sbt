@@ -12,5 +12,4 @@ lazy val root = (project in file("."))
       libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.4" % "test",
       libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.16" % "test",
       libraryDependencies += "commons-io" % "commons-io" % "2.13.0" % "test"
-
   )
